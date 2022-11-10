@@ -1,14 +1,14 @@
 package com.pdk.demo;
 
-import static io.github.pdk.ProxyHelper.SEND_GAME_DATA;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
+import io.github.pdk.BDGameSDK;
 import io.github.pdk.ICallback;
-import io.github.pdk.ProxyHelper;
 
 public class MainActivity extends Activity {
 
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         tvSendData = findViewById(R.id.tv_2);
         tvCallbackData = findViewById(R.id.tv_3);
 
-        boolean isCloudPhone = ProxyHelper.isCloudPhone(this);
+        boolean isCloudPhone = BDGameSDK.getInstance(getApplication()).isCloudPhone();
         findViewById(R.id.btn_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,7 +38,11 @@ public class MainActivity extends Activity {
         findViewById(R.id.btn_2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String result = ProxyHelper.exec(getApplicationContext(), KEY, SEND_GAME_DATA, "customer_data");
+                HashMap map = new HashMap();
+                map.put("aaa", "111");
+                map.put("bbb", "222");
+                map.put("ccc", "333");
+                String result = BDGameSDK.getInstance(getApplication()).sendCustomDataToClient(KEY, map);
                 tvSendData.setText("返回结果：" + result); //200为发送成功
             }
         });
@@ -46,7 +50,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.btn_3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProxyHelper.register(getApplicationContext(), KEY, new ICallback() {
+                BDGameSDK.getInstance(getApplication()).register(KEY, new ICallback() {
                     @Override
                     public void callback(String key, String value) {
                         tvCallbackData.setText("key:" + key + " value:" + value);
@@ -62,6 +66,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ProxyHelper.unregister(getApplicationContext(), KEY);
+        BDGameSDK.getInstance(getApplication()).unregister(KEY);
     }
 }

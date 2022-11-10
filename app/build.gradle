@@ -29,5 +29,5 @@ android {
 }
 
 dependencies {
-    implementation 'io.github.maven-rep:pdk:1.0.5'
+    api 'io.github.maven-rep:pdk:0.0.5'
 }
