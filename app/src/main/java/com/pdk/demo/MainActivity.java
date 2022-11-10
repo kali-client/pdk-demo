@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-import io.github.pdk.BDGameSDK;
+import io.github.pdk.UChannelSDK;
 import io.github.pdk.ICallback;
 
 public class MainActivity extends Activity {
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         tvSendData = findViewById(R.id.tv_2);
         tvCallbackData = findViewById(R.id.tv_3);
 
-        boolean isCloudPhone = BDGameSDK.getInstance(getApplication()).isCloudPhone();
+        boolean isCloudPhone = UChannelSDK.getInstance(getApplication()).isCloudPhone();
         findViewById(R.id.btn_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
                 map.put("aaa", "111");
                 map.put("bbb", "222");
                 map.put("ccc", "333");
-                String result = BDGameSDK.getInstance(getApplication()).sendCustomDataToClient(KEY, map);
+                String result = UChannelSDK.getInstance(getApplication()).sendCustomDataToClient(KEY,map);
                 tvSendData.setText("返回结果：" + result); //200为发送成功
             }
         });
@@ -50,10 +50,10 @@ public class MainActivity extends Activity {
         findViewById(R.id.btn_3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BDGameSDK.getInstance(getApplication()).register(KEY, new ICallback() {
+                UChannelSDK.getInstance(getApplication()).register(KEY,new ICallback() {
                     @Override
                     public void callback(String key, String value) {
-                        tvCallbackData.setText("key:" + key + " value:" + value);
+                        tvCallbackData.setText("value:" + value);
                     }
                 });
             }
@@ -66,6 +66,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BDGameSDK.getInstance(getApplication()).unregister(KEY);
+        UChannelSDK.getInstance(getApplication()).unregister(KEY);
     }
 }
